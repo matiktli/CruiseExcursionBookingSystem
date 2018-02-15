@@ -13,4 +13,5 @@ public interface ExcursionService {
     Optional<Excursion> getById(String id) throws ExcursionNotFoundException;
     Optional<Excursion> getByPortId(String id) throws ExcursionNotFoundException;
 
+    List<Excursion> getAllExcursionsByWord(String word);
 }

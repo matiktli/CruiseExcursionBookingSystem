@@ -1,6 +1,5 @@
 package com.services;
 
-import com.exceptions.ExcursionNotFoundException;
 import com.models.Excursion;
 import com.repositories.ExcursionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ExcursionServiceImp implements ExcursionService {
@@ -21,19 +21,24 @@ public class ExcursionServiceImp implements ExcursionService {
     }
 
     @Override
-    public Optional<Excursion> getById(String id) throws ExcursionNotFoundException {
-        return Optional.of(getAllExcursions().parallelStream()
+    public Optional<Excursion> getById(String id) {
+        return getAllExcursions().parallelStream()
                 .filter(excursion -> excursion.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new ExcursionNotFoundException(id)));
+                .findFirst();
     }
 
     @Override
-    public Optional<Excursion> getByPortId(String id) throws ExcursionNotFoundException {
-        return Optional.of(getAllExcursions().parallelStream()
+    public Optional<Excursion> getByPortId(String id) {
+        return getAllExcursions().parallelStream()
                 .filter(excursion -> excursion.getPort_id().equalsIgnoreCase(id))
-                .findFirst()
-                .orElseThrow(() -> new ExcursionNotFoundException(id)));
+                .findFirst();
 
+    }
+
+    @Override
+    public List<Excursion> getAllExcursionsByWord(String word){
+        return getAllExcursions().stream()
+                .filter(e -> e.getName().contains(word.toUpperCase()))
+                .collect(Collectors.toList());
     }
 }

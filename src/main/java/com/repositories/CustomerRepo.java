@@ -9,10 +9,13 @@ import java.util.Optional;
 
 public interface CustomerRepo extends JpaRepository<Customer,String>{
 
-    Optional<Customer> findCustomerById(String id);
-    Optional<Customer> findCustomerByName(String name);
-    Optional<Customer> findCustomerByEmail(String email);
-    Optional<Customer> findCustomerByIdOrNameOrEmail(Long id,String name,String email);
+    //READ
 
+    //CREATE
+
+    //UPDATE
+
+    //DELETE
+    Customer deleteCustomerById(String id);
 
 }

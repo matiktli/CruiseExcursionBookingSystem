@@ -1,21 +1,36 @@
 package com.controllers.customerControllers;
 
+import com.models.Customer;
+import com.services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/api/customer")
+@RequestMapping("/api/customers")
 public class CustomerReaderController {
 
+    @Autowired
+    private CustomerService customerService;
 
-    @RequestMapping(value = "/find",params = {"name","id","email"})
+    @RequestMapping(value = "/findOne",params = {"name","id","email"})
     @ResponseBody
-    String findCustomer(@RequestParam(name = "name",required = false) String name,
-                        @RequestParam(name = "id",required = false) String id,
-                        @RequestParam(name = "email",required = false) String email){
+    public Customer findOneCustomer(@RequestParam(name = "id",required = false) String id,
+                                    @RequestParam(name = "name",required = false) String name,
+                                    @RequestParam(name = "email",required = false) String email) {
 
-        return "TMP";
+        return customerService.getById(id)
+                .orElseGet(()->customerService.getByName(name)
+                        .orElseGet(()->customerService.getByEmail(email).get()));
+    }
+
+    @RequestMapping(value = "/findAll")
+    @ResponseBody
+    List<Customer> findAllCustomers(){
+        return customerService.getAllCustomers();
     }
 }

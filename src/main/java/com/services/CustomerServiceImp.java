@@ -1,6 +1,5 @@
 package com.services;
 
-import com.exceptions.ExcursionNotFoundException;
 import com.models.Customer;
 import com.repositories.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,33 +14,48 @@ public class CustomerServiceImp implements CustomerService {
     @Autowired
     private CustomerRepo customerRepo;
 
+    //READ
     @Override
-    public Customer getById(String id) throws ExcursionNotFoundException {
-        return Optional.of(getAllCustomers().parallelStream()
+    public Optional<Customer> getById(String id){
+        return getAllCustomers().parallelStream()
                 .filter(customer -> customer.getId().equals(id))
-                .findFirst().get()).orElseThrow(() -> new ExcursionNotFoundException("xd"));
+                .findFirst();
     }
 
     @Override
-    public Optional<Customer> getByName(String name) {
-        return Optional.of(getAllCustomers().parallelStream()
+    public Optional<Customer> getByName(String name){
+        return getAllCustomers().parallelStream()
                 .filter(customer -> customer.getName().equalsIgnoreCase(name))
-                .findFirst().get());
+                .findFirst();
     }
 
     @Override
-    public Optional<Customer> getByEmail(String email) {
-        return Optional.of(getAllCustomers().parallelStream()
+    public Optional<Customer> getByEmail(String email){
+        return getAllCustomers().parallelStream()
                 .filter(customer -> customer.getEmail().equalsIgnoreCase(email))
-                .findFirst().get());
+                .findFirst();
     }
 
     @Override
-    public Optional<Customer> getByIdOrNameOrEmail(Long id, String name, String email) {
-        return Optional.empty();
-    }
-
     public List<Customer> getAllCustomers(){
         return customerRepo.findAll();
+    }
+
+    //CREATE
+    @Override
+    public Customer registerNewCustomer(Customer customer) {
+        return customerRepo.save(customer);
+    }
+
+    //UPDATE
+    @Override
+    public Customer editExistingCustomer(Customer customer) {
+        return null;
+    }
+
+    //DELETE
+    @Override
+    public Customer deleteExistingCustomer(String id) {
+        return customerRepo.deleteCustomerById(id);
     }
 }

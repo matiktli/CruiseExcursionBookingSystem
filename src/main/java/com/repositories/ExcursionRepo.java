@@ -5,5 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ExcursionRepo extends JpaRepository<Excursion,Long>{
 
+    //READ
+
+    //CREATE
+
+    //UPDATE
+
+    //DELETE
 
 }
