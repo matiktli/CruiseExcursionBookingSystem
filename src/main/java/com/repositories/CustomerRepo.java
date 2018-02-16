@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface CustomerRepo extends JpaRepository<Customer,String>{
+public interface CustomerRepo extends JpaRepository<Customer,Long>{
 
     //READ
 

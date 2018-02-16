@@ -37,6 +37,7 @@ public class ExcursionServiceImp implements ExcursionService {
 
     @Override
     public List<Excursion> getAllExcursionsByWord(String word){
+        if(word.equals("allexc")){return getAllExcursions();}
         return getAllExcursions().stream()
                 .filter(e -> e.getName().contains(word.toUpperCase()))
                 .collect(Collectors.toList());

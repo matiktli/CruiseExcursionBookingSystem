@@ -16,9 +16,9 @@ public class CustomerServiceImp implements CustomerService {
 
     //READ
     @Override
-    public Optional<Customer> getById(String id){
+    public Optional<Customer> getById(long id){
         return getAllCustomers().parallelStream()
-                .filter(customer -> customer.getId().equals(id))
+                .filter(customer -> customer.getId()==id)
                 .findFirst();
     }
 
