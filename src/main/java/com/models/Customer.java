@@ -34,7 +34,6 @@ public class Customer {
     @Column(name = "Password")
     private String password;
 
-
     public Customer(){}
 
     public Customer(String name, String email, String password,int cabineNumber) {

@@ -21,16 +21,16 @@ public class ExcursionServiceImp implements ExcursionService {
     }
 
     @Override
-    public Optional<Excursion> getById(String id) {
+    public Optional<Excursion> getById(Long id) {
         return getAllExcursions().parallelStream()
                 .filter(excursion -> excursion.getId().equals(id))
                 .findFirst();
     }
 
     @Override
-    public Optional<Excursion> getByPortId(String id) {
+    public Optional<Excursion> getByPortId(String port_id) {
         return getAllExcursions().parallelStream()
-                .filter(excursion -> excursion.getPort_id().equalsIgnoreCase(id))
+                .filter(excursion -> excursion.getPort_id().equalsIgnoreCase(port_id))
                 .findFirst();
 
     }

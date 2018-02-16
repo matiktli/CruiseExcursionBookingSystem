@@ -1,29 +1,30 @@
 package com.models;
 
 import javax.persistence.*;
+import java.util.Locale;
 
 @Entity
 @Table(name = "Excursions")
 public class Excursion {
 
     @Id
-    private String id;
+    private Long id;
     private String port_id;
     private String name;
 
     public Excursion(){}
 
-    public Excursion(String id, String port_id, String name) {
+    public Excursion(Long id, String port_id, String name) {
         this.id = id;
         this.port_id = port_id;
         this.name = name;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

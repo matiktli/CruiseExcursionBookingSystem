@@ -22,7 +22,7 @@ public class ExcursionReaderController {
 
     @RequestMapping(value = "findOne")
     @ResponseBody
-    public Excursion findExcursion(@RequestParam(name = "id",required = false) String id,
+    public Excursion findExcursion(@RequestParam(name = "id",required = false) Long id,
                                    @RequestParam(name="port_id",required = false) String port_id) {
         // working but why??
         return excursionService.getById(id)
