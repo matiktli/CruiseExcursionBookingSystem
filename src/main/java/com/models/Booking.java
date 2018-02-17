@@ -8,7 +8,8 @@ import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "bookings")
+@Table(name = "bookings",
+        uniqueConstraints = {@UniqueConstraint( columnNames = {"customer_id","excursion_id"})})
 public class Booking implements Serializable{
 
     @Id
@@ -22,9 +23,9 @@ public class Booking implements Serializable{
     @Min(0) @Max(10)
     private int numberOfSeatsRequired;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "excursionBooking_id")
-    private ExcursionBookingPersistence excursionBookingPersistence;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "excursion_id")
+    private Excursion excursion;
 
 
     public Booking() {}
@@ -54,21 +55,11 @@ public class Booking implements Serializable{
         this.numberOfSeatsRequired = numberOfSeatsRequired;
     }
 
-    public ExcursionBookingPersistence getExcursionBookingPersistence() {
-        return excursionBookingPersistence;
+    public Excursion getExcursion() {
+        return excursion;
     }
 
-    public void setExcursionBookingPersistence(ExcursionBookingPersistence excursionBookingPersistence) {
-        this.excursionBookingPersistence = excursionBookingPersistence;
-    }
-
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", customer=" + customer +
-                ", numberOfSeatsRequired=" + numberOfSeatsRequired +
-                ", excursionBookingPersistence=" + excursionBookingPersistence +
-                '}';
+    public void setExcursion(Excursion excursion) {
+        this.excursion = excursion;
     }
 }

@@ -3,19 +3,22 @@ package com;
 import com.models.Booking;
 import com.models.Customer;
 import com.models.Excursion;
-import com.models.ExcursionBookingPersistence;
 import com.opencsv.CSVReader;
 import com.repositories.BookingRepo;
-import com.repositories.ExcursionBookingRepo;
 import com.repositories.ExcursionRepo;
 import com.services.customer.CustomerService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Component
@@ -29,9 +32,6 @@ public class StartupDatabaseCreator implements ApplicationListener<ContextRefres
 
     @Autowired
     private BookingRepo bookingRepo;
-
-    @Autowired
-    private ExcursionBookingRepo excursionBookingRepo;
 
     private static String FILE = "/home/matikitli/Programing/Projects/CruiseExcursionBookingSystem/src/main/resources/excursion.csv";
     private CSVReader reader = null;
@@ -54,6 +54,16 @@ public class StartupDatabaseCreator implements ApplicationListener<ContextRefres
             //BOOKINGS
             createTableBookings();
 
+
+            Map<Long, Integer> mapExcIdAndSeats=bookingRepo.findAll().stream()
+                    .collect(Collectors.groupingBy(booking->booking.getExcursion().getId())).entrySet().stream()
+                    .collect(Collectors.toMap(ee->ee.getKey(),
+                                                e->e.getValue().stream()
+                    .map(el->el.getNumberOfSeatsRequired()).reduce(0,(a,b)->a+b)));
+
+            System.out.println(mapExcIdAndSeats);
+
+
             System.out.println("DATABASE CREATED");
         }
 
@@ -63,39 +73,29 @@ public class StartupDatabaseCreator implements ApplicationListener<ContextRefres
 
         Booking booking1 = new Booking(4);
         booking1.setCustomer(customerService.getAllCustomers().get(0));
+        booking1.setExcursion(excursionRepo.findAll().get(0));
 
         Booking booking2 = new Booking(3);
         booking2.setCustomer(customerService.getAllCustomers().get(1));
-
-        ExcursionBookingPersistence excursionBookingPersistence = new ExcursionBookingPersistence(excursionRepo.findAll().get(0));
-        excursionBookingPersistence.addBooking(booking1);
-        excursionBookingPersistence.addBooking(booking2);
-
-        excursionBookingRepo.save(excursionBookingPersistence);
+        booking2.setExcursion(excursionRepo.findAll().get(0));
 
         Booking booking3 = new Booking(7);
         booking3.setCustomer(customerService.getAllCustomers().get(2));
+        booking3.setExcursion(excursionRepo.findAll().get(10));
 
         Booking booking4 = new Booking(3);
         booking4.setCustomer(customerService.getAllCustomers().get(1));
-
-        ExcursionBookingPersistence excursionBookingPersistence2 = new ExcursionBookingPersistence(excursionRepo.findAll().get(10));
-        excursionBookingPersistence2.addBooking(booking3);
-        excursionBookingPersistence2.addBooking(booking4);
-
-        excursionBookingRepo.save(excursionBookingPersistence2);
+        booking4.setExcursion(excursionRepo.findAll().get(10));
 
         Booking booking5 = new Booking(7);
         booking5.setCustomer(customerService.getAllCustomers().get(2));
+        booking5.setExcursion(excursionRepo.findAll().get(20));
 
         Booking booking6 = new Booking(3);
         booking6.setCustomer(customerService.getAllCustomers().get(1));
+        booking6.setExcursion(excursionRepo.findAll().get(1));
 
-        ExcursionBookingPersistence excursionBookingPersistence3 = new ExcursionBookingPersistence(excursionRepo.findAll().get(10));
-        excursionBookingPersistence3.addBooking(booking5);
-        excursionBookingPersistence3.addBooking(booking6);
-
-        excursionBookingRepo.save(excursionBookingPersistence3);
+        bookingRepo.save(Arrays.asList(booking1,booking2,booking3,booking4,booking5,booking6));
 
     }
 
