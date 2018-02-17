@@ -18,7 +18,7 @@ public class ExcursionBookingPersistence {
     @JoinColumn(name = "excursion_id")
     private Excursion excursion;
 
-    @OneToMany(mappedBy = "excursionBookingPersistence",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "excursionBookingPersistence",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Booking> listOfBookings = new ArrayList<>();
 
     public ExcursionBookingPersistence() {}

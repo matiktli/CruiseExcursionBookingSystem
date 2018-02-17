@@ -8,18 +8,14 @@ import com.opencsv.CSVReader;
 import com.repositories.BookingRepo;
 import com.repositories.ExcursionBookingRepo;
 import com.repositories.ExcursionRepo;
-import com.services.CustomerService;
-import com.services.ExcursionService;
+import com.services.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -42,18 +38,24 @@ public class StartupDatabaseCreator implements ApplicationListener<ContextRefres
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event){
+
         if(!areDatabaseEmpty()){
             return;
         }
-        //EXCURSIONS
-        try { createTableExcursions(); } catch (Exception e) { e.printStackTrace(); }
-        //CUSTOMERS
-        createTableCustomers();
-        //BOOKINGS
-        createTableBookings();
+        else {
+            //EXCURSIONS
+            try {
+                createTableExcursions();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //CUSTOMERS
+            createTableCustomers();
+            //BOOKINGS
+            createTableBookings();
 
-
-        System.out.println("DATABASE CREATED");
+            System.out.println("DATABASE CREATED");
+        }
 
     }
 
@@ -83,9 +85,17 @@ public class StartupDatabaseCreator implements ApplicationListener<ContextRefres
 
         excursionBookingRepo.save(excursionBookingPersistence2);
 
-       List<ExcursionBookingPersistence> list = excursionBookingRepo.findAll();
-       System.out.println(list.get(1).getListOfBookings().get(1).getNumberOfSeatsRequired());
+        Booking booking5 = new Booking(7);
+        booking5.setCustomer(customerService.getAllCustomers().get(2));
 
+        Booking booking6 = new Booking(3);
+        booking6.setCustomer(customerService.getAllCustomers().get(1));
+
+        ExcursionBookingPersistence excursionBookingPersistence3 = new ExcursionBookingPersistence(excursionRepo.findAll().get(10));
+        excursionBookingPersistence3.addBooking(booking5);
+        excursionBookingPersistence3.addBooking(booking6);
+
+        excursionBookingRepo.save(excursionBookingPersistence3);
 
     }
 

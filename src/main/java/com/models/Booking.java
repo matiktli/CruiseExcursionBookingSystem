@@ -1,6 +1,10 @@
 package com.models;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 @Entity
@@ -11,13 +15,14 @@ public class Booking implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id",nullable = false)
     private Customer customer;
 
+    @Min(0) @Max(10)
     private int numberOfSeatsRequired;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "excursionBooking_id")
     private ExcursionBookingPersistence excursionBookingPersistence;
 

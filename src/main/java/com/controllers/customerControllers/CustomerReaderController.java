@@ -1,7 +1,7 @@
 package com.controllers.customerControllers;
 
 import com.models.Customer;
-import com.services.CustomerService;
+import com.services.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
